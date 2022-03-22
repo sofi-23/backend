@@ -1,0 +1,34 @@
+<html lang='en'>
+	<head>
+		<meta charset='utf-8' />
+		<meta http-equiv='X-UA-Compatible' content='IE=edge' />
+
+		<title>Ejs</title>
+		<meta
+			name='viewport'
+			content='width=device-width, initial-scale=1.0, viewport-fit=cover'
+		/>
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+	</head>
+    <body>
+        <div class="container d-flex justify-content-center mt-3">
+            <% if (productos) { %>
+                <% for(let product of productos) { %>
+                    <div class="flex-column">
+                    <div class="card mt-3" style="width: 18rem;">
+                        <img src=<%= product.thumbnail %> class="card-img-top p-1" alt=<%= product.title %>>
+                        <div class="card-body">
+                            <h5 class="card-title"><%= product.title %></h5>
+                            <p class="card-text">$ <%= product.price %></p>
+                        </div>
+                    </div>
+                <% }%>
+            <% } else { %>
+                <h1>No products found</h1> 
+            <% } %>
+            <a href="/">Homepage</a>
+            </div>
+        
+        </div>
+    </body>
+    </html>

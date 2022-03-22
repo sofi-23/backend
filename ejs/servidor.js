@@ -5,20 +5,11 @@ const { Router } = express
 const router = Router()
 let products = new Contenedor()
 
-const { engine: handlebars } = require('express-handlebars');
 
-app.set('view engine', 'hbs');
+app.set('view engine', 'ejs');
 app.set('views', __dirname + '/views');
 
-app.engine(
-	'hbs',
-	handlebars({
-		layoutsDir: __dirname + '/views/layouts',
-		partialsDir: __dirname + '/views/partials',
-		defaultLayout: 'index',
-		extname: 'hbs',
-	})
-);
+
 
 app.use(express.static('public'));
 app.use(express.json()) // para poder usar el .body
@@ -34,12 +25,12 @@ app.use("", router)
 
 router.get("/productos", (req, res)=> {
     let productos = products.getAll()
-    res.render("list", { productos })
+    res.render("list.ejs", { productos })
   
 })
 router.get("/", (req, res)=> {
 
-	res.render('form');
+	res.render('form.ejs');
 })
 
 
