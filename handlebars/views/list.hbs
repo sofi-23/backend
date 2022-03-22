@@ -1,0 +1,21 @@
+<div class="container d-flex justify-content-center mt-3">
+    {{#if productos }} 
+        {{#each productos}}    
+            <div class="flex-column">
+            <div class="card mt-3" style="width: 18rem;">
+                <img src={{this.thumbnail}} class="card-img-top p-1" alt={{this.title}}>
+                <div class="card-body">
+                    <h5 class="card-title">{{this.title}}</h5>
+                    <p class="card-text">$ {{this.price}}</p>
+                </div>
+            </div>
+        {{/each }}
+        {{else}}
+        <h1>No products found</h1> 
+    {{/if}}
+
+    
+    <a href="/">Homepage</a>
+    </div>
+   
+</div>
