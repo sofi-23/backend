@@ -3,13 +3,14 @@
 		<meta charset='utf-8' />
 		<meta http-equiv='X-UA-Compatible' content='IE=edge' />
 		
-		<title>Handlebars</title>
+		<title>Websockets</title>
 		<meta
 			name='viewport'
 			content='width=device-width, initial-scale=1.0, viewport-fit=cover'
 		/>
 		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 		<script src="/socket.io/socket.io.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js"></script>
 		<script src="./main.js"></script>
 	</head>
 	<body>
@@ -30,27 +31,56 @@
 				</div>
 				<button type="submit" value="submit" class="btn btn-primary">Submit</button>
 			</form>
-			<div class="container d-flex justify-content-center mt-3">
 			{{#if productos }} 
-				{{#each productos}}    
-					<div class="flex-column">
-					<div class="card mt-3" style="width: 18rem;">
-						<img src={{this.thumbnail}} class="card-img-top p-1" alt={{this.title}}>
-						<div class="card-body">
-							<h5 class="card-title">{{this.title}}</h5>
-							<p class="card-text">$ {{this.price}}</p>
-						</div>
-					</div>
-				{{/each }}
-				{{else}}
-				<h1>No products found</h1> 
-			{{/if}}
-			</div>
-			</div>
+				<table class="table">
+					<thead>
+						<tr>
+						<th scope="col">Product</th>
+						<th scope="col">Price</th>
+						<th scope="col">Image</th>
+						</tr>
+					</thead>
+					<tbody>
+					{{#each productos}}    
+						<tr>
+						<td>{{this.title}}</td>
+						<td>$ {{this.price}}</td>
+						<td><img src={{this.thumbnail}} class="card-img-top p-1" style="width: 5rem" alt={{this.title}}></td>
+						</tr>
+				
+					{{/each }}	
+					</tbody>
+					</table>	
+					{{else}}
+					<h1>No products found</h1> 
+				{{/if}}			
+		
 			<div class="chatContainer">
 				<h3>Chat</h3>
+				<form class="m-auto d-flex flex-row" onsubmit="return sendMessage(this)">
+				<div class="form-group">
+					<label for="email">Email:</label>
+					<input type="text" class="form-control" name="email" id="email">
+				</div>
+				<div class="form-group">
+					<label for="message">Message: </label>
+					<input type="text" class="form-control" name="message" id="message">
+				</div>
+				<button type="submit" value="submit" class="btn btn-primary">Send</button>
+			
+			</form>
+				<div class="d-flex flex-column">
+					{{#if messages }}
+					{{#each messages }}
+					<div class="d-flex flex-row">
+						<div class="person"><b style="color:blue">{{this.email}} </b><span style="color:brown">{{this.date}}</span></div>
+						<div class="textContainer"> - <i style="color:green"> {{this.message}}</i></div>
+					</div>
+					{{/each}}
+					{{/if}}
+				</div>
+				
 			</div>
 		</div>
-		
 	</body>
 </html>

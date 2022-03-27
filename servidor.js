@@ -11,6 +11,13 @@ const { engine: handlebars } = require('express-handlebars');
 const httpServer = new HttpServer(app)
 const io = new IOServer(httpServer)
 
+let messages = [
+    { email: "Juan", date: "27/3/22", text: "¡Hola! ¿Que tal?" },
+    { email: "Pedro", date: "27/3/22", text: "¡Muy bien! ¿Y vos?" },
+    { email: "Ana", date: "27/3/22", text: "¡Genial!" }
+];
+
+
 app.use(express.static("./public"))
 
 app.set('view engine', 'hbs');
@@ -39,7 +46,7 @@ app.use("", router)
 
 router.get("/", (req, res)=> {
     let productos = products.getAll()
-    res.render("index", { productos })
+    res.render("index", { productos, messages })
 })
 
 io.on('connection', function(socket) {
@@ -48,6 +55,11 @@ io.on('connection', function(socket) {
 	socket.on('new-product', data => {
 		products.save(data)
 		io.sockets.emit("productos", products)
+	})
+	socket.on('new-message', data => {
+		console.log("server listened to new message")
+		messages.push(data)
+		io.sockets.emit("messages", messages)
 	})
 	
 });
