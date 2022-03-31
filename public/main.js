@@ -1,7 +1,17 @@
 const socket = io.connect();
 
 
-socket.on("productos", data => console.log(data))
+socket.on("productos", data => {
+    const fetchDocument = async () => {
+            const response = await fetch("./public/index.hbs")
+            const template =  await response.text()
+            template = Handlebars.compile(template)
+            template({data})
+            console.log(template)
+    }
+    fetchDocument()   
+    }
+        )
 
 function addProduct (e) {
     const newProduct = {
@@ -9,7 +19,6 @@ function addProduct (e) {
         price: document.getElementById("price").value,
         thumbnail: document.getElementById("thumbnail").value
     }   
-    console.log(newProduct)
     socket.emit("new-product", newProduct)
 }
 

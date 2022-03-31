@@ -6,16 +6,13 @@ const router = Router()
 let products = new Contenedor()
 const { Server: IOServer } = require("socket.io") //importando socket
 const { Server: HttpServer } = require("http")
+const fs = require("fs")
 
 const { engine: handlebars } = require('express-handlebars');
 const httpServer = new HttpServer(app)
 const io = new IOServer(httpServer)
 
-let messages = [
-    { email: "Juan", date: "27/3/22", text: "¡Hola! ¿Que tal?" },
-    { email: "Pedro", date: "27/3/22", text: "¡Muy bien! ¿Y vos?" },
-    { email: "Ana", date: "27/3/22", text: "¡Genial!" }
-];
+let messages = [];
 
 
 app.use(express.static("./public"))
@@ -53,12 +50,21 @@ io.on('connection', function(socket) {
     console.log('Un cliente se ha conectado' );
 	socket.emit("productos", products)
 	socket.on('new-product', data => {
+	
 		products.save(data)
 		io.sockets.emit("productos", products)
 	})
 	socket.on('new-message', data => {
-		console.log("server listened to new message")
 		messages.push(data)
+		console.log([...messages])
+		let stringMessages = JSON.stringify(messages, 2, null)
+		fs.writeFile("./messages.txt", stringMessages, error => {
+			if(error) {
+				console.log(error)
+			}else {
+				console.log("success!")
+			}
+		})
 		io.sockets.emit("messages", messages)
 	})
 	
